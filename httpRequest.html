@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <h2>The XMLHttpRequest Object</h2>
+
+    <p id="demo">Let AJAX change this text.</p>
+
+    <button type="button" onclick="loadDoc()">Change Content</button>
+
+    <script>
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            var myObj;
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById("demo").innerHTML = 
+                    var temp_text = this.responseText;
+                    myObj = JSON.parse(temp_text)
+                    var cityName = myObj.name;
+                    var temp_kel = myObj.main.temp;
+                    var temp_cel = parseInt(temp_kel) - 273;
+                    var temp_fah = temp_cel * 1.8 + 32;
+                    var desc = myObj.weather[0].description;
+
+                    document.getElementById("demo").innerHTML = "<div> City: " + cityName
+                        + "<br> Temperature: " + temp_cel + "&#8451;    (Fahrenheit: "
+                        + temp_fah + "&#8457;) <br>" + "<dir> Description: " + desc
+                        + "</div>";
+                }
+            };
+            xhttp.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=Fort%20Lee&appid=bec6ba9742b36bfd08753e637d2a47fc", true);
+            xhttp.send();
+
+        }
+    </script>
+
+</body>
+
+</html>
